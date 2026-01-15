@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class 9 Science - Royal Foundation Portal</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Pirata+One&family=Quintessential&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================================
+           1. CSS VARIABLES & CORE STYLING (The Foundation)
+           ============================================================ */
+        :root {
+            --gold: #d4af37;
+            --dark-gold: #996515;
+            --parchment: #f4e4bc;
+            --deep-ocean: #0a192f;
+            --alchemy-green: #062c1d;
+            --blood-wood: #2c1a06;
+            --text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            --border-style: 8px double var(--gold);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #1a1a1a;
+            background-image: url('https://www.transparenttextures.com/patterns/dark-leather.png');
+            color: var(--parchment);
+            font-family: 'Old Standard TT', serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Ornate Background Frame */
+        .page-frame {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 25px solid transparent;
+            border-image: url('https://i.imgur.com/8SIn1fC.png') 100 round; /* Ornate Border */
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* ============================================================
+           2. HEADER SECTION
+           ============================================================ */
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, rgba(0,0,0,0) 70%);
+        }
+
+        .main-title {
+            font-family: 'Pirata One', cursive;
+            font-size: 5rem;
+            color: var(--gold);
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.5));
+        }
+
+        .sub-title {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.8rem;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        /* ============================================================
+           3. THE THREE ARCHES (Physics, Chemistry, Biology)
+           ============================================================ */
+        .portal-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            padding: 50px 10%;
+            perspective: 1000px;
+        }
+
+        .arch-card {
+            position: relative;
+            width: 350px;
+            height: 600px;
+            border-radius: 175px 175px 15px 15px; /* Perfect Arch */
+            border: 4px solid var(--gold);
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 100px rgba(0,0,0,0.5);
+        }
+
+        .arch-card:hover {
+            transform: translateY(-20px) rotateY(10deg);
+            box-shadow: 0 30px 60px rgba(212,175,55,0.3);
+            border-color: #fff;
+        }
+
+        /* Backgrounds for Cards */
+        .physics-bg { background: linear-gradient(to bottom, #001524, #1561ad); }
+        .chemistry-bg { background: linear-gradient(to bottom, #002b1c, #2d5a27); }
+        .biology-bg { background: linear-gradient(to bottom, #2b1600, #5c4033); }
+
+        .card-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .card-title {
+            font-family: 'Pirata One', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 3px 3px 10px #000;
+        }
+
+        .card-illustration {
+            width: 80%;
+            height: 250px;
+            margin: 20px 0;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: drop-shadow(0 0 15px rgba(255,255,255,0.2));
+        }
+
+        /* Illustrations using placeholders - in real site use your image icons */
+        .physics-icon { background-image: url('https://cdn-icons-png.flaticon.com/512/1256/1256569.png'); }
+        .chem-icon { background-image: url('https://cdn-icons-png.flaticon.com/512/3022/3022415.png'); }
+        .bio-icon { background-image: url('https://cdn-icons-png.flaticon.com/512/2821/2821945.png'); }
+
+        /* ============================================================
+           4. DYNAMIC SECTION (Chapters & Notes)
+           ============================================================ */
+        .overlay-panel {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/aged-paper.png'), var(--parchment);
+            z-index: 10000;
+            transition: 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            color: #3e2723;
+            padding: 100px 10%;
+            overflow-y: auto;
+        }
+
+        .overlay-panel.active { right: 0; }
+
+        .close-portal {
+            position: absolute;
+            top: 50px; left: 50px;
+            font-family: 'MedievalSharp';
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid #3e2723;
+        }
+
+        .chapter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .chapter-box {
+            border: 2px solid #8b4513;
+            padding: 25px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .chapter-box:hover {
+            background: #fff;
+            transform: scale(1.03);
+            box-shadow: 10px 10px 0px #8b4513;
+        }
+
+        .note-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            padding: 8px 15px;
+            background: #3e2723;
+            color: #fff;
+            border: none;
+            font-family: 'MedievalSharp';
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        /* ============================================================
+           5. PERIODIC TABLE & FOOTER
+           ============================================================ */
+        .footer-tools {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 100px 0;
+        }
+
+        .scroll-btn {
+            background: url('https://i.imgur.com/KndCqfH.png'); /* Scroll PNG */
+            background-size: 100% 100%;
+            width: 250px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Quintessential', cursive;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #4a2c0b;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .scroll-btn:hover { transform: scale(1.1); filter: sepia(0); }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-frame"></div>
+
+    <header>
+        <h1 class="main-title">Class 9 Science</h1>
+        <p class="sub-title">Exploring the Mysteries of the Universe & Life</p>
+    </header>
+
+    <main class="portal-container">
+        <div class="arch-card physics-bg" onclick="showChapters('physics')">
+            <div class="card-content">
+                <h2 class="card-title">Physics</h2>
+                <div class="card-illustration physics-icon"></div>
+                <p>Motion, Force, Gravitation & Energy</p>
+            </div>
+        </div>
+
+        <div class="arch-card chemistry-bg" onclick="showChapters('chemistry')">
+            <div class="card-content">
+                <h2 class="card-title">Chemistry</h2>
+                <div class="card-illustration chem-icon"></div>
+                <p>Atoms, Molecules & Matter</p>
+            </div>
+        </div>
+
+        <div class="arch-card biology-bg" onclick="showChapters('biology')">
+            <div class="card-content">
+                <h2 class="card-title">Biology</h2>
+                <div class="card-illustration bio-icon"></div>
+                <p>Cells, Tissues & Diversity</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="footer-tools">
+        <button class="scroll-btn">PRACTICE QUIZZES</button>
+        <button class="scroll-btn" onclick="openNotes()">STUDY NOTES</button>
+        <button class="scroll-btn">PROGRESS TRACKER</button>
+    </div>
+
+    <div id="portalOverlay" class="overlay-panel">
+        <span class="close-portal" onclick="closePortal()">← BACK TO ARCHES</span>
+        <h1 id="portalTitle" style="font-family: 'Pirata One'; font-size: 4rem; text-align: center;"></h1>
+        <hr style="border: 2px solid #8b4513; margin: 20px 0;">
+        
+        <div id="chapterGrid" class="chapter-grid">
+            </div>
+    </div>
+
+    <script>
+        /* ============================================================
+           6. JAVASCRIPT LOGIC (The Brain)
+           ============================================================ */
+        
+        const scienceData = {
+            physics: [
+                { id: 1, name: "Motion", notes: 12 },
+                { id: 2, name: "Force and Laws of Motion", notes: 8 },
+                { id: 3, name: "Gravitation", notes: 15 },
+                { id: 4, name: "Work and Energy", notes: 10 },
+                { id: 5, name: "Sound", notes: 7 }
+            ],
+            chemistry: [
+                { id: 1, name: "Matter in Our Surroundings", notes: 9 },
+                { id: 2, name: "Is Matter Around Us Pure", notes: 11 },
+                { id: 3, name: "Atoms and Molecules", notes: 20 },
+                { id: 4, name: "Structure of the Atom", notes: 14 }
+            ],
+            biology: [
+                { id: 1, name: "The Fundamental Unit of Life", notes: 18 },
+                { id: 2, name: "Tissues", notes: 13 },
+                { id: 3, name: "Diversity in Living Organisms", notes: 25 },
+                { id: 4, name: "Why do we fall ill?", notes: 9 },
+                { id: 5, name: "Natural Resources", notes: 6 }
+            ]
+        };
+
+        function showChapters(subject) {
+            const overlay = document.getElementById('portalOverlay');
+            const grid = document.getElementById('chapterGrid');
+            const title = document.getElementById('portalTitle');
+
+            title.innerText = subject.toUpperCase();
+            grid.innerHTML = '';
+
+            scienceData[subject].forEach(chapter => {
+                const card = `
+                    <div class="chapter-box">
+                        <h3>Chapter ${chapter.id}: ${chapter.name}</h3>
+                        <p style="margin: 10px 0; font-style: italic;">Available Handwritten Notes: ${chapter.notes}</p>
+                        <div class="note-actions">
+                            <button class="btn-action" onclick="viewNotes()">View Notes</button>
+                            <button class="btn-action" onclick="uploadNote()">Upload Yours</button>
+                            <button class="btn-action" style="background:#8b4513">Feedback</button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+
+            overlay.classList.add('active');
+        }
+
+        function closePortal() {
+            document.getElementById('portalOverlay').classList.remove('active');
+        }
+
+        function uploadNote() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.onchange = _ => {
+                alert("Dhanyawad! Aapka handwritten note review ke liye bhej diya gaya hai.");
+            };
+            input.click();
+        }
+
+        function viewNotes() {
+            alert("Aapke doston dwara share kiye gaye notes load ho rahe hain...");
+        }
+
+    </script>
+</body>
+</html>
